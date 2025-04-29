@@ -10,7 +10,7 @@ import android.os.Message
 import android.util.Log
 import br.edu.ifsp.scl.sdm.currencyconverter.model.api.CurrencyConverterApiClient
 import br.edu.ifsp.scl.sdm.currencyconverter.model.livedata.CurrencyConverterLiveData
-import java.net.HttpURLConnection
+import java.net.HttpURLConnection.HTTP_OK
 
 class CurrenciesService: Service() {
     private lateinit var handler: CurrenciesServiceHandler
@@ -19,7 +19,7 @@ class CurrenciesService: Service() {
     private inner  class CurrenciesServiceHandler(looper: Looper): Handler(looper) {
         override fun handleMessage(msg: Message) {
             CurrencyConverterApiClient.service.getCurrencies().execute().also { response ->
-                if(response.code() == HttpURLConnection.HTTP_OK){
+                if(response.code() == HTTP_OK){
                     response.body()?.also { currencyList ->
                         CurrencyConverterLiveData.currenciesLiveData.postValue(currencyList)
                     }
